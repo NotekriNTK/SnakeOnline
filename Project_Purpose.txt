@@ -1,0 +1,33 @@
+The purpose of this project is to recreate the game Snake but with a twist.
+This is going to be an interpretation of Snake, where the purpose is no longer
+to try and beat your own record, but rather to make sure you get the highest score
+in the current game session.
+
+Interpretation:
+The game is classic Snake but with multiple players [multiplayer].
+The goal of the game is to have the highest score by the when alle players have died.
+You get die when you collide with either a wall or a player body-part.
+If two players run into each other, both players die.
+
+Main goals:
+    - Recreate the classic game Snake
+    - Make it multiplayer to add a twist
+    - Make a functional arena mode
+
+Extra goals:
+Make more gamemodes;
+    - make the edges function as a portal to the other edge
+    - customizable arena size
+    - add a highscore system
+    - add a stattracker with wlr, kda, wins, losses and winstreak
+
+
+Information on TCP and sockets:
+https://www.fortinet.com/resources/cyberglossary/tcp-ip#:~:text=Transmission%20Control%20Protocol%20(TCP)%20is,data%20and%20messages%20over%20networks.
+https://realpython.com/python-sockets/#background
+https://en.wikipedia.org/wiki/Berkeley_sockets
+https://en.wikipedia.org/wiki/Transmission_Control_Protocol
+https://en.wikipedia.org/wiki/Inter-process_communication
+https://docs.python.org/3/library/socket.html
+
+
