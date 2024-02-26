@@ -1,7 +1,7 @@
 import socket
 import threading
 
-HOST, PORT = "localhost", 9999
+HOST, PORT = "192.168.20.69", 9999
 
 def receive_data(client_socket):
     try:
@@ -19,7 +19,7 @@ def start_client():
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     # Connect to the server
-    client_socket.connect(('localhost', 9999))
+    client_socket.connect((HOST, PORT))
 
     # Start a thread to receive data from the server
     receive_thread = threading.Thread(target=receive_data, args=(client_socket,))
@@ -34,6 +34,7 @@ def start_client():
     except KeyboardInterrupt:
         print("Client shutting down.")
         client_socket.close()
+    return client_socket
 
 if __name__ == "__main__":
     start_client()
