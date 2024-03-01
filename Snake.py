@@ -9,14 +9,19 @@ from time import sleep
 
 this = None
 
+#   Input map
 input_movement = {K_w:'y-',K_s:'y+',K_d:'x+',K_a:'x-'}
+
+#   Good colours :)
 snake_colours = [
         (165, 38, 176),     #   Purple
         (240, 155, 89)      #   Brown
 ]
 
+#   Deprecated
 render_tick = False
 
+#   Hard coded amount of players due to lack of time
 players = {
     'P0':{'lastmovement':'-x',
         'newmovement':'-x',
@@ -26,20 +31,21 @@ players = {
         'player':Entities.Player(5,10,snake_colours[1])}
 }
 
-
+#   IP and Port to connect to
 HOST, PORT = '192.168.20.69', 9999
 
-def quit_application():
+def quit_application():#    Close socket connection when the application is quit
     global client_socket
     client_socket.close()
 
-def send_data(data:str):
+def send_data(data:str):#   Easy send function
     global client_socket
     client_socket.send(data.encode('utf-8'))
 
-def parse_data(data):
+def parse_data(data):#      Parsing of received data
     global this, tick, STATE_OF_APPLICATION, apple,render_tick
     tag, cmd = data.split('|')
+    #   I miss switch case from Java :'(
     if tag == 'you':
         this = cmd
         return
@@ -99,6 +105,7 @@ def update_logic():
 pygame.init()
 
 #   Global  Static  Variables
+
 TILE_SIZE:int   = 40
 WIDTH:int       = 17
 HEIGHT:int      = 17
@@ -107,16 +114,23 @@ SCREEN_HEIGHT = HEIGHT*TILE_SIZE
 SCREEN_WIDTH = HEIGHT*TILE_SIZE
 STATE_OF_APPLICATION = 'MENU'
 
+#   Other Vars (primarily pygame related)
+
 game_screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
+#   Good colours, defo not stolen from Googles Snake...
 bg_colours = [(119, 221, 119),(106, 196, 106)]
 
 clock = pygame.time.Clock()
 
 client_socket = start_client()
+
+#   Sleep to ensure that variable 'this' is set
 sleep(0.05)
 tick = 0
 new_movement = 'x-'
+
+#   Some hardcoded variables because yes...
 apple = Entities.Apple(10,10)
 pygame.display.set_caption(f'Snake MP ({this}) connected to ({HOST}:{PORT})')
 
@@ -132,6 +146,7 @@ def game_loop_logic():
         elif event.type == KEYDOWN:
             if event.key == K_q:
                 pygame.quit()
+            #   Check pressed key against input map
             if event.key in input_movement.keys():
                 new_movement = input_movement[event.key]
                 if not re.sub('[-+]','',last_movement) in new_movement:
@@ -139,8 +154,6 @@ def game_loop_logic():
                     pass
                 else:
                     new_movement = last_movement
-            #if event.key == K_SPACE:
-            #    apple.new_position()
     
     try:
         pygame.display.update()
@@ -179,17 +192,17 @@ def menu_loop_logic():
                 pygame.quit()
     try:
         pygame.display.update()
-    except:
+    except: #   If application has been quit this will throw an exception
+            #   Then I'll know the program needs to be shut down and will return 0
         print('Shutting down application...')
         return 0
     game_screen.fill(bg_colours[0])
     return True
-
+##abb8c3
 LoopMap = {'MENU':menu_loop_logic,'GAME':game_loop_logic}
-
 while True:
     status = LoopMap[STATE_OF_APPLICATION]()
-    if not status:
+    if not status:  #   Exit logic
         print('Ending application...')
         quit_application()
         break
